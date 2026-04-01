@@ -547,16 +547,16 @@ for key, value in stats.items():
 
 
 # Code block 9
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
+# gunicorn -w 4 -b 0.0.0.0:5000 app:app
 
 
 
 # Code block 10
-FROM python:3.10
+# FROM python:3.10
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY app.py .
+# COPY requirements.txt .
+# RUN pip install -r requirements.txt
+# COPY app.py .
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
 
 

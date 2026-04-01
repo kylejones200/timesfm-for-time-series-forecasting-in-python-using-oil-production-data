@@ -64,7 +64,7 @@ def save_fig(path: str):
 class Config:
     csv_path: str = "2001-2025 Net_generation_United_States_all_sectors_monthly.csv"
     freq: str = "MS"
-    horizon: int = 8  # Jan–Aug 2025
+    horizon: int = 8  # Jan-Aug 2025
 
 
 def load_series(cfg: Config) -> pd.Series:
@@ -95,7 +95,7 @@ def main():
     cfg = Config()
     y = load_series(cfg)
 
-    # Train/cutoff at Dec 2024, forecast Jan–Aug 2025
+    # Train/cutoff at Dec 2024, forecast Jan-Aug 2025
     end_2024 = pd.Timestamp("2024-12-01")
     jan_2025 = pd.Timestamp("2025-01-01")
     aug_2025 = pd.Timestamp("2025-08-01")
@@ -147,16 +147,16 @@ def main():
     ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-        ax.set_xlabel('')
+    ax.set_xlabel('')
 
     if len(y_hist):
         ax.annotate('History (2024)', xy=(y_hist.index[-1], y_hist.values[-1]), xytext=(6,0), textcoords='offset points', fontsize=9, va='center', ha='left', color='#666666')
     if len(y_act):
-        ax.annotate('Actual (Jan–Aug 2025)', xy=(y_act.index[-1], y_act.values[-1]), xytext=(6,0), textcoords='offset points', fontsize=9, va='center', ha='left', color='#444444')
+        ax.annotate('Actual (Jan-Aug 2025)', xy=(y_act.index[-1], y_act.values[-1]), xytext=(6,0), textcoords='offset points', fontsize=9, va='center', ha='left', color='#444444')
     if not fc_df.empty:
         ax.annotate('TimesFM', xy=(fc_df.index[-1], fc_df[col].values[-1]), xytext=(6,0), textcoords='offset points', fontsize=9, va='center', ha='left', color='#000000')
 
-    ax.set_title('EIA Net Generation — TimesFM forecast Jan–Aug 2025')
+    ax.set_title('EIA Net Generation — TimesFM forecast Jan-Aug 2025')
     save_fig('eia_timesfm_last_fold.png')
 
 if __name__ == '__main__':
