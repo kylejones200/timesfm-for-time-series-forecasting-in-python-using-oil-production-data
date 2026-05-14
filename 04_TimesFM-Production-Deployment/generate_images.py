@@ -3,6 +3,7 @@
 Generated script to create Tufte-style visualizations
 """
 
+import signalplot
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,31 +20,7 @@ except Exception:
     tf = None
 
 # Tufte-style configuration
-plt.rcParams.update({
-    'font.family': 'serif',
-    'font.serif': ['Palatino', 'Times New Roman', 'Times'],
-    'font.size': 11,
-    'axes.labelsize': 11,
-    'axes.titlesize': 13,
-    'axes.titleweight': 'normal',
-    'xtick.labelsize': 10,
-    'ytick.labelsize': 10,
-    'legend.fontsize': 10,
-    'axes.spines.top': False,
-    'axes.spines.right': False,
-    'axes.linewidth': 0.5,
-    'axes.edgecolor': '#333333',
-    'axes.labelcolor': '#333333',
-    'xtick.color': '#333333',
-    'ytick.color': '#333333',
-    'text.color': '#333333',
-    'axes.grid': False,
-    'figure.facecolor': 'white',
-    'axes.facecolor': 'white',
-    'savefig.facecolor': 'white',
-    'savefig.dpi': 300,
-    'savefig.bbox': 'tight',
-})
+signalplot.apply(font_family='serif')
 
 images_dir = Path("images")
 images_dir.mkdir(exist_ok=True)
@@ -62,31 +39,6 @@ plt.savefig = savefig_tufte
 
 # Code blocks from article
 
-plt.rcParams.update({
-    'font.family': 'serif',
-    'font.serif': ['Palatino', 'Times New Roman', 'Times'],
-    'font.size': 11,
-    'axes.labelsize': 11,
-    'axes.titlesize': 13,
-    'axes.titleweight': 'normal',
-    'xtick.labelsize': 10,
-    'ytick.labelsize': 10,
-    'legend.fontsize': 10,
-    'axes.spines.top': False,
-    'axes.spines.right': False,
-    'axes.linewidth': 0.5,
-    'axes.edgecolor': '#333333',
-    'axes.labelcolor': '#333333',
-    'xtick.color': '#333333',
-    'ytick.color': '#333333',
-    'text.color': '#333333',
-    'axes.grid': False,
-    'figure.facecolor': 'white',
-    'axes.facecolor': 'white',
-    'savefig.facecolor': 'white',
-    'savefig.dpi': 300,
-    'savefig.bbox': 'tight',
-})
 
 # Load production data
 data_path = Path("../../geospatial/datasets/pr_OK.csv")

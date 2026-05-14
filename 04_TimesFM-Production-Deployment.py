@@ -1,6 +1,7 @@
 # Extracted code from '04_TimesFM-Production-Deployment.md'
 # Blocks appear in the same order as in the markdown article.
 
+import signalplot
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,12 +28,7 @@ logger.info(f"Date range: {ts.index.min()} to {ts.index.max()}")
 logger.info(f"Value range: {ts.min():.2f} to {ts.max():.2f}")
 
 # Visualize
-plt.rcParams.update({
-    'axes.grid': False,
-    'font.family': 'serif',
-    'axes.spines.top': False,
-    'axes.spines.right': False
-})
+signalplot.apply(font_family='serif')
 fig, ax = plt.subplots(figsize=(14, 6))
 ax.plot(ts.index, ts.values, linewidth=2, color='#1f77b4')
 ax.set_title('Oklahoma Energy Production (1970-2023)', fontsize=14, fontweight='bold')
