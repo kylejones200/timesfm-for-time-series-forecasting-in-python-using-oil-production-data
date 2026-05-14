@@ -15,7 +15,7 @@ try:
     tf.random.set_seed(42)
 except ImportError:
     tf = None
-except:
+except Exception:
     pass
 
 # Tufte-style configuration
@@ -536,7 +536,7 @@ def forecast_with_metrics(context, horizon=24):
 for _ in range(10):
     try:
         forecast_with_metrics(ts.values[-512:], horizon=24)
-    except:
+    except Exception:
         pass
 
 logger.info("Forecast Metrics:")

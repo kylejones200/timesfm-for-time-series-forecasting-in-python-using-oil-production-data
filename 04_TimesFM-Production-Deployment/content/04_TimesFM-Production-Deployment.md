@@ -19,28 +19,28 @@ Traditional forecasting models require training on your specific data. TimesFM i
 We use energy production data to demonstrate production deployment.
 
 
-The dataset provides **54 years of annual production data (1970–2023)** for Oklahoma, with total annual production ranging from roughly **4.51 million** to **8.65 million** units. This long, macro-scale series is representative of the kinds of business KPIs that benefit from automated forecasting services.
+The dataset provides 54 years of annual production data (1970–2023) for Oklahoma, with total annual production ranging from roughly 4.51 million to 8.65 million units. This long, macro-scale series is representative of the kinds of business KPIs that benefit from automated forecasting services.
 
 ### Installing and Loading TimesFM
 TimesFM is available as a Python package. Installation is straightforward, but the APIs are evolving quickly—always check the official README for the latest usage patterns.
 
 In our environment, importing TimesFM reports:
 
-- **Python**: 3.11.14  
-- **Backend**: PyTorch TimesFM (selected automatically)  
+- Python: 3.11.14  
+- Backend: PyTorch TimesFM (selected automatically)  
 
 The public package exposes a base class that is configured via hyperparameters and a checkpoint object. That means that, in practice, you will either:
 
 - Use a pre-trained checkpoint (e.g., one published by Google or your team), or  
 - Train or fine-tune your own TimesFM variant and then load it via `load_from_checkpoint`.
 
-Because the current API expects hyperparameters and a checkpoint rather than the simple `context_len` / `horizon_len` signature used in early examples, our example code focuses on the **deployment architecture** (Flask, batch, async, monitoring) rather than reporting end-to-end TimesFM accuracy numbers.
+Because the current API expects hyperparameters and a checkpoint rather than the simple `context_len` / `horizon_len` signature used in early examples, our example code focuses on the deployment architecture (Flask, batch, async, monitoring) rather than reporting end-to-end TimesFM accuracy numbers.
 
 ### Basic Forecasting Interface
 At a high level, a TimesFM forecasting call takes:
 
-- A **context window** (the recent history of the time series), and  
-- A **forecast horizon** (how many steps ahead to predict).
+- A context window (the recent history of the time series), and  
+- A forecast horizon (how many steps ahead to predict).
 
 The example code constructs a context from the last 100–512 annual production values and requests a 10–24 step forecast. Even though our local run is blocked by API changes to the public TimesFM package, the surrounding logic (context construction, horizon selection, and plotting of historical vs. forecast values) remains valid and can be wired up once a stable checkpoint and API are available.
 

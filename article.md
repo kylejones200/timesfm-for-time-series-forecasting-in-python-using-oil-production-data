@@ -2,9 +2,9 @@
 
 using Oil Production Data TimesFM removes the need for constant model retraining. It generalizes across industries. It scales to massive datasets. It represents the...
 
-### **TimesFM for Time Series Forecasting in Python using Oil Production Data** 
+### TimesFM for Time Series Forecasting in Python using Oil Production Data 
 
-#### **TimesFM removes the need for constant model retraining. It generalizes across industries. It scales to massive datasets. It represents the next generation of forecasting AI.**
+#### TimesFM removes the need for constant model retraining. It generalizes across industries. It scales to massive datasets. It represents the next generation of forecasting AI.
 Time series forecasting has always relied on domain-specific models. Traditional statistical methods like ARIMA and deep learning approaches like LSTMs work well for structured datasets. But large, diverse time series --- spanning industries and regions --- need a more generalizable approach. Google's TimesFM is a foundation model that generalizes across domains, predicting trends in energy, finance, weather, and industrial production. Unlike task-specific models, it learns patterns from vast datasets, applying knowledge across different applications.
 
 This project uses TimesFM to forecast oil production in North Dakota.
@@ -31,7 +31,7 @@ Finally, we visualize the results, comparing actual production with the TimesFM 
 <figcaption>This graph shows just one well instead of 10,000.</figcaption>
 
 
-### **Evaluating the Performance of TimesFM**
+### Evaluating the Performance of TimesFM
 TimesFM forecasts match the overall trend of oil production. The model generalizes well, even with limited training data. This confirms that pretrained time series models can outperform traditional methods with minimal adaptation.
 
 It does not replace domain-specific models entirely. But it provides a strong baseline for forecasting without feature engineering.

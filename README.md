@@ -1,7 +1,7 @@
 # TimesFM for Time Series Forecasting in Python using Oil Production Data
 
-**Published:** 2025-03-12
-**Medium:** [https://medium.com/@kyle-t-jones/timesfm-for-time-series-forecasting-in-python-using-oil-production-data-b0a59b89d3ff](https://medium.com/@kyle-t-jones/timesfm-for-time-series-forecasting-in-python-using-oil-production-data-b0a59b89d3ff)
+Published: 2025-03-12
+Medium: [https://medium.com/@kyle-t-jones/timesfm-for-time-series-forecasting-in-python-using-oil-production-data-b0a59b89d3ff](https://medium.com/@kyle-t-jones/timesfm-for-time-series-forecasting-in-python-using-oil-production-data-b0a59b89d3ff)
 
 ## About
 
