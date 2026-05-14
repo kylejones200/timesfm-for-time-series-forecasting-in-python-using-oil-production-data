@@ -49,7 +49,6 @@ images_dir = Path("images")
 images_dir.mkdir(exist_ok=True)
 
 # Update all savefig calls to use images_dir
-import matplotlib.pyplot as plt
 original_savefig = plt.savefig
 
 def savefig_tufte(filename, **kwargs):
@@ -62,10 +61,6 @@ def savefig_tufte(filename, **kwargs):
 plt.savefig = savefig_tufte
 
 # Code blocks from article
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from pathlib import Path
 
 plt.rcParams.update({
     'font.family': 'serif',
@@ -145,7 +140,6 @@ plt.show()
 
 # Code block 3
 from timesfm import TimesFm
-import numpy as np
 
 # Initialize TimesFM model
 # TimesFM is a zero-shot foundation model - no training needed!
@@ -222,10 +216,8 @@ plt.show()
 
 # Code block 5
 from flask import Flask, request, jsonify
-import numpy as np
 from datetime import datetime, timedelta
 import logging
-import time
 
 # Setup logging
 logging.basicConfig(

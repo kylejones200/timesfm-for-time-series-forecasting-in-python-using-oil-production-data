@@ -49,7 +49,6 @@ plt.show()
 # Make sure you have PyTorch installed
 
 from timesfm import TimesFm
-import numpy as np
 
 # Initialize TimesFM model
 # TimesFM is a zero-shot foundation model - no training needed!
@@ -121,10 +120,8 @@ plt.savefig('timesfm_forecast.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 from flask import Flask, request, jsonify
-import numpy as np
 from datetime import datetime, timedelta
 import logging
-import time
 
 # Setup logging
 logging.basicConfig(
