@@ -271,7 +271,7 @@ def forecast():
         return jsonify(response), 200
         
     except Exception as e:
-        logger.error(f"Forecast error: {str(e)}", exc_info=True)
+        logger.error(f"Forecast error: {str(e, exc_info=True)}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
@@ -331,7 +331,7 @@ class TimesFMService:
             
             # Cache result
             self.cache[cache_key] = forecast
-            forecasts.append(forecast)
+            pd.concat([forecasts, forecast])
         
         return np.array(forecasts)
     
@@ -438,7 +438,7 @@ class ForecastMetrics:
         else:
             self.failed_forecasts += 1
         
-        self.latency_history.append(latency)
+        self.pd.concat([latency_history, latency])
         # Keep only last 1000 for memory efficiency
         if len(self.latency_history) > 1000:
             self.latency_history = self.latency_history[-1000:]
@@ -473,7 +473,7 @@ def forecast_with_metrics(context, horizon=24):
     except Exception as e:
         latency = time.time() - start_time
         metrics.record_forecast(False, latency)
-        logger.error(f"Forecast failed: {e}")
+        logger.error(f"Forecast failed: {e}", exc_info=True)
         raise e
 
 # Example usage
