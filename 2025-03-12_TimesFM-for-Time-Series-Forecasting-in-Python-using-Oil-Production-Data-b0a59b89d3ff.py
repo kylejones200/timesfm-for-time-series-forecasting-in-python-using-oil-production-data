@@ -54,7 +54,6 @@ plt.savefig("timesfm_test_forecast_tufte.png", dpi=300)
 plt.show()
 
 
-np.random.seed(42)
 signalplot.apply(font_family='serif')
 
 
@@ -90,6 +89,7 @@ def build_timesfm_model(h: int):
 
 
 def main(plot: bool = False):
+    np.random.seed(42)
     cfg = Config()
     y = load_series(cfg)
 

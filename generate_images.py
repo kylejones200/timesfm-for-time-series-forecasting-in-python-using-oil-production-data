@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Set random seeds
-np.random.seed(42)
 try:
     import tensorflow as tf
     tf.random.set_seed(42)
@@ -275,6 +274,7 @@ def forecast():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
+    np.random.seed(42)
     # Run in production with: gunicorn -w 4 -b 0.0.0.0:5000 app:app
     app.run(host='0.0.0.0', port=5000, debug=False)
 

@@ -1,31 +1,29 @@
 data:
-  input_file: "data/reference/example_series.csv"
-  date_column: "date"
-  value_column: "value"
-
+  input_file: data/reference/example_series.csv
+  date_column: date
+  value_column: value
+  seed: 42
 model:
-  name: "ARIMA"
+  name: ARIMA
   start_p: 0
   start_q: 0
   max_p: 5
   max_q: 5
   seasonal: false
   stepwise: true
-
 evaluation:
   test_size: 0.2
-  metric: "RMSE"
-
+  metric: RMSE
 output:
-  output_dir: "outputs/reference"
-  plot_name: "forecast_plot.png"
-  forecast_csv: "forecast.csv"
-  metrics_csv: "metrics.csv"
+  output_dir: outputs/reference
+  plot_name: forecast_plot.png
+  forecast_csv: forecast.csv
+  metrics_csv: metrics.csv
   dpi: 300
-
 plotting:
-  figure_size: [12, 6]
+  figure_size:
+  - 12
+  - 6
   linewidth: 1.5
   alpha: 0.8
   show_plot: true
-
