@@ -406,7 +406,7 @@ async def main():
     contexts = [ts.values[-512:] for _ in range(10)]  # 10 series
     
     start_time = time.time()
-    forecasts = await async_service.forecast_batch_async(contexts, horizon=24)
+    await async_service.forecast_batch_async(contexts, horizon=24)
     elapsed = time.time() - start_time
     
     logger.info(f"Forecasted {len(contexts)} series in {elapsed:.2f} seconds")
@@ -418,7 +418,6 @@ async def main():
 
 
 # Code block 8
-from collections import defaultdict
 from dataclasses import dataclass, field
 
 @dataclass
