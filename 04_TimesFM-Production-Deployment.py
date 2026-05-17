@@ -290,7 +290,7 @@ class TimesFMService:
 
             # Cache result
             self.cache[cache_key] = forecast
-            pd.concat([forecasts, forecast])
+            forecasts.append(forecast)
 
         return np.array(forecasts)
 
@@ -394,7 +394,7 @@ class ForecastMetrics:
         else:
             self.failed_forecasts += 1
 
-        self.pd.concat([latency_history, latency])
+        self.latency_history.append(latency)
         # Keep only last 1000 for memory efficiency
         if len(self.latency_history) > 1000:
             self.latency_history = self.latency_history[-1000:]
