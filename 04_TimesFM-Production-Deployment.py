@@ -1,12 +1,20 @@
 # Extracted code from '04_TimesFM-Production-Deployment.md'
 # Blocks appear in the same order as in the markdown article.
 
+import asyncio
+import logging
+import time
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import signalplot
+from flask import Flask, jsonify, request
+from timesfm import TimesFm
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
@@ -45,7 +53,6 @@ plt.show()
 # Note: TimesFM requires specific dependencies
 # Make sure you have PyTorch installed
 
-from timesfm import TimesFm
 
 # Initialize TimesFM model
 # TimesFM is a zero-shot foundation model - no training needed!
@@ -79,7 +86,6 @@ logger.info(f"Forecast range: {forecast.min():.2f} to {forecast.max():.2f}")
 logger.info(f"First 10 forecast values: {forecast[:10]}")
 
 # Simple forecasting example
-import time
 
 # Use last 100 points as context
 context = ts.values[-100:]
@@ -97,17 +103,13 @@ fig, ax = plt.subplots(figsize=(14, 6))
 
 # Historical data
 historical_dates = ts.index[-50:]
-ax.plot(
-    historical_dates, ts.values[-50:], "b-", linewidth=2, label="Historical", alpha=0.7
-)
+ax.plot(historical_dates, ts.values[-50:], "b-", linewidth=2, label="Historical", alpha=0.7)
 
 # Forecast
 forecast_dates = pd.date_range(
     start=ts.index[-1] + pd.DateOffset(years=1), periods=horizon, freq="YS"
 )
-ax.plot(
-    forecast_dates, forecast, "r--", linewidth=2, label="TimesFM Forecast", marker="o"
-)
+ax.plot(forecast_dates, forecast, "r--", linewidth=2, label="TimesFM Forecast", marker="o")
 
 ax.axvline(ts.index[-1], color="gray", linestyle=":", linewidth=1, alpha=0.5)
 ax.set_title("TimesFM Zero-Shot Forecast", fontsize=14, fontweight="bold")
@@ -118,10 +120,7 @@ plt.tight_layout()
 plt.savefig("timesfm_forecast.png", dpi=300, bbox_inches="tight")
 plt.show()
 
-import logging
-from datetime import datetime, timedelta
 
-from flask import Flask, jsonify, request
 
 # Setup logging
 logging.basicConfig(
@@ -163,14 +162,12 @@ def health_check():
 def forecast():
     """
     Forecast endpoint
-
     Expected JSON:
     {
         "data": [1.2, 3.4, 5.6, ...],  # Time series values
         "horizon": 24,  # Forecast horizon (optional, default 24)
         "context_length": 512  # Optional, defaults to min(512, len(data))
     }
-
     Returns:
     {
         "forecast": [pred1, pred2, ...],
@@ -181,7 +178,6 @@ def forecast():
     }
     """
     start_time = time.time()
-
     try:
         data = request.json
         if not data or "data" not in data:
@@ -189,31 +185,22 @@ def forecast():
 
         time_series = np.array(data["data"], dtype=np.float32)
         horizon = data.get("horizon", 24)
-
         # Validate input
         if len(time_series) < 32:
             return jsonify({"error": "Input too short (minimum 32 points)"}), 400
 
         if horizon < 1 or horizon > model.horizon_len:
-            return jsonify(
-                {"error": f"Horizon must be between 1 and {model.horizon_len}"}
-            ), 400
+            return jsonify({"error": f"Horizon must be between 1 and {model.horizon_len}"}), 400
 
         # Use last context_length points
-        context_length = data.get(
-            "context_length", min(model.context_len, len(time_series))
-        )
+        context_length = data.get("context_length", min(model.context_len, len(time_series)))
         context = time_series[-context_length:]
-
         # Make forecast
         forecast_values = model.forecast(context=context, horizon=horizon)
-
         # Generate timestamps (assuming daily data)
         last_date = datetime.now()
         forecast_dates = [last_date + timedelta(days=i) for i in range(1, horizon + 1)]
-
         latency = (time.time() - start_time) * 1000  # Convert to milliseconds
-
         response = {
             "forecast": forecast_values.tolist(),
             "dates": [d.isoformat() for d in forecast_dates],
@@ -221,7 +208,6 @@ def forecast():
             "horizon": horizon,
             "latency_ms": round(latency, 2),
         }
-
         logger.info(
             f"Forecast generated: horizon={horizon}, context={len(context)}, latency={latency:.2f}ms"
         )
@@ -257,7 +243,6 @@ class TimesFMService:
     def forecast_batch(self, time_series_list, horizon=24):
         """
         Forecast multiple time series in batch.
-
         Parameters:
         -----------
         time_series_list : list of arrays
@@ -271,10 +256,8 @@ class TimesFMService:
             Array of forecasts (n_series, horizon)
         """
         forecasts = []
-
         for i, ts in enumerate(time_series_list):
             ts_array = np.array(ts, dtype=np.float32)
-
             # Check cache (simple implementation)
             cache_key = (
                 tuple(ts_array[-100:]),
@@ -287,7 +270,6 @@ class TimesFMService:
             # Make forecast
             context = ts_array[-min(512, len(ts_array)) :]
             forecast = self.model.forecast(context=context, horizon=horizon)
-
             # Cache result
             self.cache[cache_key] = forecast
             forecasts.append(forecast)
@@ -318,8 +300,6 @@ logger.info(f"Batch forecasts shape: {batch_forecasts.shape}")
 logger.info(f"Batch processing time: {batch_time:.3f} seconds")
 logger.info(f"Average time per series: {batch_time / len(multiple_series):.3f} seconds")
 
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
 
 class AsyncTimesFMService:
@@ -342,9 +322,7 @@ class AsyncTimesFMService:
     async def forecast_async(self, context, horizon=24):
         """Async forecast"""
         loop = asyncio.get_event_loop()
-        forecast = await loop.run_in_executor(
-            self.executor, self.model.forecast, context, horizon
-        )
+        forecast = await loop.run_in_executor(self.executor, self.model.forecast, context, horizon)
         return forecast
 
     async def forecast_batch_async(self, contexts, horizon=24):
@@ -361,11 +339,9 @@ async_service = AsyncTimesFMService(max_workers=4)
 # Async batch forecasting
 async def main():
     contexts = [ts.values[-512:] for _ in range(10)]  # 10 series
-
     start_time = time.time()
     await async_service.forecast_batch_async(contexts, horizon=24)
     elapsed = time.time() - start_time
-
     logger.info(f"Forecasted {len(contexts)} series in {elapsed:.2f} seconds")
     logger.info(f"Throughput: {len(contexts) / elapsed:.2f} forecasts/second")
 
@@ -373,7 +349,6 @@ async def main():
 # Run async
 # asyncio.run(main())
 
-from dataclasses import dataclass, field
 
 
 @dataclass
@@ -403,13 +378,8 @@ class ForecastMetrics:
 
     def get_stats(self):
         """Get current statistics"""
-        p95_latency = (
-            np.percentile(self.latency_history, 95) if self.latency_history else 0
-        )
-        p99_latency = (
-            np.percentile(self.latency_history, 99) if self.latency_history else 0
-        )
-
+        p95_latency = np.percentile(self.latency_history, 95) if self.latency_history else 0
+        p99_latency = np.percentile(self.latency_history, 99) if self.latency_history else 0
         return {
             "total_requests": self.total_requests,
             "success_rate": self.successful_forecasts / max(self.total_requests, 1),

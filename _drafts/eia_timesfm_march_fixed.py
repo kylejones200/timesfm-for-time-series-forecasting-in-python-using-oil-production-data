@@ -35,9 +35,7 @@ def build_timesfm_model(h: int):
             horizon_len=h,
             context_len=512,
         ),
-        checkpoint=timesfm.TimesFmCheckpoint(
-            huggingface_repo_id="google/timesfm-1.0-200m-pytorch"
-        ),
+        checkpoint=timesfm.TimesFmCheckpoint(huggingface_repo_id="google/timesfm-1.0-200m-pytorch"),
     )
     return tfm
 
@@ -45,17 +43,13 @@ def build_timesfm_model(h: int):
 def main(plot: bool = False):
     cfg = Config()
     y = load_series(cfg)
-
     # Train/cutoff at Dec 2024, forecast Jan–Aug 2025
     end_2024 = pd.Timestamp("2024-12-01")
     jan_2025 = pd.Timestamp("2025-01-01")
     aug_2025 = pd.Timestamp("2025-08-01")
-
     y_train = y.loc[:end_2024]
     y_act = y.loc[jan_2025:aug_2025]
-
     tfm = build_timesfm_model(h=len(pd.period_range("2025-01", "2025-08", freq="M")))
-
     # Prepare dataframe input for forecast_on_df
     df_in = pd.DataFrame(
         {
@@ -89,7 +83,6 @@ def main(plot: bool = False):
     # Plot greyscale Tufte-style
     start_2024 = pd.Timestamp("2024-01-01")
     y_hist = y.loc[start_2024:end_2024]
-
     if plot:
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(y_hist.index, y_hist.values, color="#888888", lw=1.5)
@@ -107,7 +100,6 @@ def main(plot: bool = False):
         ax.spines["right"].set_visible(False)
         ax.grid(False)
         ax.set_xlabel("")
-
         if len(y_hist):
             ax.annotate(
                 "History (2024)",
