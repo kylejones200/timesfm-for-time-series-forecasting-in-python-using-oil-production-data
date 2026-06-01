@@ -11,14 +11,7 @@ Traditional forecasting models require careful tuning. ARIMA works well for stat
 
 TimesFM solves this by pretraining on diverse time series data. It learns fundamental patterns, applying them to new datasets without retraining. This allows faster, more scalable forecasting.
 
-## About
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
-
-## Files
-
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
 
 ## Disclaimer
 
